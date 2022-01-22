@@ -2,6 +2,7 @@
 using System.Linq;
 using CommunityPortalREST.Models.Data;
 using CommunityPortalREST.Models.Domains;
+using Microsoft.EntityFrameworkCore;
 
 namespace CommunityPortalREST.Models.Repositories
 {
@@ -16,7 +17,9 @@ namespace CommunityPortalREST.Models.Repositories
 
         public List<Post> Read()
         {
-            return Context.Posts.ToList();
+            return Context.Posts
+                .Include(post => post.Categories)
+                .ToList();
         }
 
         public Post Read(int id)

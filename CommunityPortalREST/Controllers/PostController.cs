@@ -104,5 +104,40 @@ namespace CommunityPortalREST.Controllers
 
             return post;
         }
+
+        [HttpGet("{id:int}")]
+        public ActionResult<CreatePostViewModel> Details(int id)
+        {
+            Post entry = Service.GetById(id);
+
+            if (entry == null)
+            {
+                return BadRequest();
+            }
+
+            return new CreatePostViewModel()
+            {
+                Title = entry.Title,
+                Thumbnail = entry.Thumbnail,
+                Content = entry.Content,
+                Categories = entry.Categories
+                    .Select(category => category.CategoryId)
+                    .ToList()
+            };
+        }
+
+        [HttpPost("{id:int}")]
+        public IActionResult Update(int id, CreatePostViewModel entry)
+        {
+            bool result = Service.Edit(id, entry);
+            return result ? Ok() : BadRequest();
+        }
+
+        [HttpDelete("{id:int}")]
+        public IActionResult Delete(int id)
+        {
+            bool result = Service.Remove(id);
+            return result ? Ok() : BadRequest();
+        }
     }
 }

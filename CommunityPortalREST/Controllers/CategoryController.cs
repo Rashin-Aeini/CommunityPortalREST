@@ -25,35 +25,32 @@ namespace CommunityPortalREST.Controllers
         {
             List<Category> categories = Service.GetAll();
 
-            if (entry.Size != -1)
+            if (entry.Size != -1 && !string.IsNullOrEmpty(entry.Search))
             {
                 categories = categories
                     .Where(item => item.Title.Contains(entry.Search))
                     .ToList();
             }
 
-            ResponseCategoryViewModel response = new ResponseCategoryViewModel
-            {
-                Pages = entry.Size != -1 ?
-                    (int)Math.Ceiling(categories.Count / (double)entry.Size) :
-                    1
-            };
-
             int offset = entry.Size != -1 ?
                 (entry.Page > 1 ? (entry.Page - 1) * entry.Size : 0) :
                 0;
 
-            response.Result = categories
-                .Skip(offset)
-                .Take(entry.Size == -1 ? categories.Count : entry.Size)
-                .Select(item => new IndexCategoryViewModel()
-                {
-                    Id = item.Id,
-                    Title = item.Title
-                })
-                .ToList();
-
-            return response;
+            return new ResponseCategoryViewModel
+            {
+                Pages = entry.Size != -1 ?
+                    (int)Math.Ceiling(categories.Count / (double)entry.Size) :
+                    1,
+                Result = categories
+                    .Skip(offset)
+                    .Take(entry.Size == -1 ? categories.Count : entry.Size)
+                    .Select(item => new IndexCategoryViewModel()
+                    {
+                        Id = item.Id,
+                        Title = item.Title
+                    })
+                    .ToList()
+            };
         }
 
         [HttpPost]
