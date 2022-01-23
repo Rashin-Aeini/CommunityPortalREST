@@ -93,7 +93,7 @@ namespace CommunityPortalREST.Controllers
         }
 
         [HttpPost] // /post
-        public ActionResult<Post> Create(CreatePostViewModel entry)
+        public IActionResult Create(CreatePostViewModel entry)
         {
             if (!ModelState.IsValid)
             {
@@ -102,7 +102,7 @@ namespace CommunityPortalREST.Controllers
 
             Post post = Service.Add(entry);
 
-            return post;
+            return Ok();
         }
 
         [HttpGet("{id:int}")]
