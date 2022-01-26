@@ -6,6 +6,8 @@ namespace CommunityPortalREST.Models.Domains
     {
         public int Id { get; set; }
         public string Title { get; set; }
+        public bool Menu { get; set; }
         public List<CategoryPost> Posts { get; set; }
+        
     }
 }

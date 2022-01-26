@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CommunityPortalREST.Models.Domains;
 using CommunityPortalREST.Models.Repositories;
 using CommunityPortalREST.Models.ViewModels.Category;
 
 namespace CommunityPortalREST.Models.Services
 {
-    public class CategoryService : IService<Category, CreateCategoryViewModel>
+    public class CategoryService : ICategoryService
     {
         private CategoryRepository Repository { get; }
 
@@ -49,6 +50,41 @@ namespace CommunityPortalREST.Models.Services
         {
             Category item = GetById(id);
             return item != null && Repository.Delete(item);
+        }
+
+        public Category MakeAsMenu(int id)
+        {
+            Category entry = GetById(id);
+
+            if (entry != null)
+            {
+                entry.Menu = true;
+
+                Repository.Update(entry);
+            }
+
+            return entry;
+        }
+
+        public Category ReleaseFromMenu(int id)
+        {
+            Category entry = GetById(id);
+
+            if (entry != null)
+            {
+                entry.Menu = false;
+
+                Repository.Update(entry);
+            }
+
+            return entry;
+        }
+
+        public List<Category> Menus()
+        {
+            return GetAll()
+                .Where(item => item.Menu)
+                .ToList();
         }
     }
 }

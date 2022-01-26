@@ -14,6 +14,10 @@ namespace CommunityPortalREST.Models.Configurations
                 .IsRequired()
                 .HasMaxLength(150);
 
+            builder.Property(category => category.Menu)
+                .IsRequired()
+                .HasDefaultValue(false);
+
             builder.HasMany(category => category.Posts)
                 .WithOne(post => post.Category)
                 .HasForeignKey(post => post.CategoryId);
