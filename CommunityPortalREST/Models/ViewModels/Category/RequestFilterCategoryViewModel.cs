@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace CommunityPortalREST.Models.ViewModels.Category
+﻿namespace CommunityPortalREST.Models.ViewModels.Category
 {
     public class RequestFilterCategoryViewModel
     {

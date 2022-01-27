@@ -3,10 +3,12 @@ using System.Linq;
 using CommunityPortalREST.Models.Domains;
 using CommunityPortalREST.Models.Services;
 using CommunityPortalREST.Models.ViewModels.Menu;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CommunityPortalREST.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class MenuController : ControllerBase
