@@ -5,8 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using CommunityPortalREST.Models.Data;
+using CommunityPortalREST.Models.Handlers;
 using CommunityPortalREST.Models.Repositories;
 using CommunityPortalREST.Models.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 
 namespace CommunityPortalREST
@@ -34,6 +36,17 @@ namespace CommunityPortalREST
 
             services.AddScoped<CategoryRepository>();
             services.AddScoped<CategoryService>();
+
+            services.AddScoped<AccountRepository>();
+            services.AddScoped<AccountService>();
+
+            services.AddScoped<RoleRepository>();
+
+            services.AddScoped<TokenRepository>();
+
+            services.AddAuthentication()
+                .AddScheme<AuthenticationSchemeOptions, AuthorizationHandler>
+                    ("BasicAuthentication", null);
             
             services.AddCors(options =>
             {
@@ -69,6 +82,7 @@ namespace CommunityPortalREST
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
             
             app.UseEndpoints(endpoints =>
