@@ -19,6 +19,7 @@ namespace CommunityPortalREST.Models.Repositories
         {
             return Context.Posts
                 .Include(post => post.Categories)
+                .ThenInclude(item => item.Category)
                 .ToList();
         }
 

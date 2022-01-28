@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CommunityPortalREST.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class MenuController : ControllerBase
@@ -33,6 +32,7 @@ namespace CommunityPortalREST.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult<MenuViewModel> Create(int id)
         {
             Category entry = Service.MakeAsMenu(id);
@@ -50,6 +50,7 @@ namespace CommunityPortalREST.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize]
         public ActionResult Delete(int id)
         {
             Category entry = Service.ReleaseFromMenu(id);
