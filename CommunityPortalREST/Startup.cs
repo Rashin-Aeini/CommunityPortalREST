@@ -19,10 +19,12 @@ namespace CommunityPortalREST
         {
             Configuration = configuration;
             CorsPolicyName = "AllowAllOrigins";
+            AuthenticationName = "BasicAuthentication";
         }
 
         public IConfiguration Configuration { get; }
         private string CorsPolicyName { get; }
+        private string AuthenticationName { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -44,9 +46,9 @@ namespace CommunityPortalREST
 
             services.AddScoped<TokenRepository>();
 
-            services.AddAuthentication()
+            services.AddAuthentication(AuthenticationName)
                 .AddScheme<AuthenticationSchemeOptions, AuthorizationHandler>
-                    ("BasicAuthentication", null);
+                    (AuthenticationName, null);
             
             services.AddCors(options =>
             {

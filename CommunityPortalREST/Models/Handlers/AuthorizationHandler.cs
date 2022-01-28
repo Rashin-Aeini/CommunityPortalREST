@@ -32,11 +32,11 @@ namespace CommunityPortalREST.Models.Handlers
             Repository = repository;
         }
 
-        protected override Task<AuthenticateResult> HandleAuthenticateAsync()
+        protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             if (!Request.Headers.ContainsKey("Authorization"))
             {
-                return Task.FromResult(AuthenticateResult.Fail("Authorization header missing."));
+                return AuthenticateResult.Fail("Authorization header missing.");
             }
 
             string header = Request.Headers["Authorization"].ToString();
@@ -67,25 +67,26 @@ namespace CommunityPortalREST.Models.Handlers
                                         new List<Claim>()
                                         {
                                             new Claim(ClaimTypes.NameIdentifier, model.Id.ToString()),
+                                            new Claim(ClaimTypes.Name, model.Username),
                                             new Claim(ClaimTypes.Role,
                                                 string.Join(", ", model.Roles.Select(item => item.Role.Name)))
-                                        }
+                                        },
+                                        Scheme.Name
                                     )
                                 );
 
                                 AuthenticationTicket ticket = new AuthenticationTicket(claims, Scheme.Name);
 
-                                return Task.FromResult(
-                                    AuthenticateResult.Success(ticket));
+                                return AuthenticateResult.Success(ticket);
                             }
                         }
                     }
 
-                    return Task.FromResult(AuthenticateResult.Fail("Authorization code not valid or expired."));
+                    return AuthenticateResult.Fail("Authorization code not valid or expired.");
                 }
             }
 
-            return Task.FromResult(AuthenticateResult.Fail("Authorization code not formatted properly."));
+            return AuthenticateResult.Fail("Authorization code not formatted properly.");
         }
     }
 }
